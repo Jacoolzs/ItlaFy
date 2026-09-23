@@ -12,25 +12,26 @@ class ListaSimple:
 
         if self.head is None:
             self.head = nuevaCancion
-            return
+            return True
 
         actual = self.head
         while(actual.siguiente is not None):
             actual = actual.siguiente
 
         actual.siguiente = nuevaCancion
+        return True
 
     # Complejidad: O(n)
     def listar(self):
         actual = self.head
 
         if(actual is None):
-            print("No hay canciones registradas")
-            return
+            return False
 
         while(actual is not None):
             print(actual.cancion)
             actual = actual.siguiente
+        return True
 
     # Complejidad: O(n)
     def buscar_por_id(self,id_buscado):
@@ -40,8 +41,7 @@ class ListaSimple:
             if actual.cancion.id == id_buscado:
                 return actual.cancion
             actual = actual.siguiente
-        print("No se encontraron coincidencias")
-        return None
+        return actual
     
     # Complejidad: O(n)
     def buscar_por_nombre(self,busqueda,criterio):
@@ -59,7 +59,8 @@ class ListaSimple:
                     encontrados = True
             actual = actual.siguiente
 
-        if not encontrados: print("No se encontraron coincidencias")
+        if not encontrados: return False
+        else: return True
 
     # Complejidad: O(n)
     def eliminar_por_id(self,id_buscado):
@@ -77,5 +78,5 @@ class ListaSimple:
                 actual.siguiente = actual.siguiente.siguiente
                 return True
             actual = actual.siguiente
-
+            
         return False
