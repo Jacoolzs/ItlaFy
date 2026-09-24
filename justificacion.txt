@@ -1,0 +1,14 @@
+Justificación del Uso de Estructuras de Datos
+
+Para este proyecto decidi separar las dos colecciones principales del sistema utilizando dos estructuras distintas segun la necesidad de cada modulo:
+
+en atalogo General de Canciones use Lista Simplemente Enlazada (ListaSimple)
+motivo: El catálogo funciona como un repositorio o inventario general de canciones. Las operaciones que se realizan sobre él son registrar canciones nuevas, eliminarlas y hacer búsquedas secuenciales (por ID, título o artista).
+- Justificación técnica: Para estas tareas solo hace falta recorrer los datos en un único sentido (de inicio a fin). No existe la necesidad de "ir hacia atrás" ni de mantener un puntero a una canción actual. Usar una lista simple aquí es la opción más eficiente porque evita la sobrecarga de memoria de guardar un puntero adicional (anterior) en cada nodo, manteniendo la lógica de inserción y eliminación mucho más limpia y directa.
+
+2. Mi Playlist y Reproductor -> Lista Doblemente Enlazada (ListaDoblementeEnlazada)
+- Motivo de elección: La playlist simula el comportamiento de un reproductor de música real, donde el usuario necesita desplazarse activamente entre canciones.
+- Justificación técnica: 
+  1. Navegación bidireccional en O(1): Manteniendo una referencia a la canción actual (current), avanzar a la siguiente (current.siguiente) o retroceder a la anterior (current.anterior) toma tiempo constante O(1). Con una lista simple, volver a la canción anterior obligaría a recorrer la lista desde la cabeza cada vez (O(n)).
+  2. Recorrido inverso: Permite cumplir con la función de mostrar la playlist tanto en orden directo como en orden inverso de forma natural, recorriendo desde tail hacia head usando los punteros anteriores.
+  3. Comportamiento circular: Al llegar a los extremos, permite saltar del inicio al final (head a tail) o viceversa de manera instantánea en O(1).

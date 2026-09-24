@@ -1,4 +1,4 @@
-from NodoDoble import NodoDoble
+from src.structures.NodoDoble import NodoDoble
 
 class ListaDoblementeEnlazada:
 
@@ -9,6 +9,13 @@ class ListaDoblementeEnlazada:
         self.current = None
 
     # Complejidad O(1)
+    # Retorna el objeto cancion almacenado en el nodo actual
+    def actual(self):
+        if self.current is None:
+            return None
+        return self.current.cancion
+
+    # Complejidad O(1)
     def agregar(self,cancion):
         nuevaCancion = NodoDoble(cancion)
         
@@ -16,62 +23,58 @@ class ListaDoblementeEnlazada:
             self.head = nuevaCancion
             self.tail = nuevaCancion
             self.current = nuevaCancion
-            return
+            return True
 
         nuevaCancion.anterior = self.tail
         self.tail.siguiente = nuevaCancion
         self.tail = nuevaCancion
+        return True
 
     # Complejidad O(1)
     def avanzar(self):
         if self.head is None:
-            print("No hay canciones en la playlist")
-            return
+            return False
         
         if self.current.siguiente is None:
             self.current = self.head
-            return
+            return True
         else:
             self.current = self.current.siguiente
-            return
+            return True
 
     # Complejidad O(1)
     def retroceder(self):
         if self.head is None:
-            print("No hay canciones en la playlist")
-            return
+            return False
         
         if self.current.anterior is None:
             self.current = self.tail
-            return
+            return True
         else:
             self.current = self.current.anterior
-            return
+            return True
 
     # Complejidad O(n)
-    def mostrar_playlist(self,inverso):
-    
-        if self.head is None:
-            print("No hay canciones en la playlist")
-            return
-        
-        if inverso:
-            actual = self.tail
-            while actual is not None:
-                print(actual.cancion)
-                actual = actual.anterior
-            return
-        else:
-            actual = self.head
-            while actual is not None:
-                print(actual.cancion)
-                actual = actual.siguiente
-            return
+    # Permite iterar hacia adelante por defecto sobre la lista doblemente enlazada
+    def __iter__(self):
+        return self.recorrer(inverso=False)
+
+    # Complejidad O(n)
+    # Generador que recorre la playlist en sentido directo o inverso sin usar estructuras externas
+    def recorrer(self, inverso=False):
+        actual = self.tail if inverso else self.head
+        while actual is not None:
+            yield actual.cancion
+            actual = actual.anterior if inverso else actual.siguiente
+
+    # Complejidad O(n)
+    # Generador compatible para obtener las canciones de la lista
+    def mostrar_playlist(self, inverso):
+        return self.recorrer(inverso)
 
     # Complejidad O(n)
     def eliminar_por_id(self,id_eliminar):
         if self.head is None:
-            print("No hay canciones en la playlist")
             return False
 
         actual = self.head
@@ -106,12 +109,9 @@ class ListaDoblementeEnlazada:
                 else:
                     actual.anterior.siguiente = actual.siguiente
                     actual.siguiente.anterior = actual.anterior
-
-                print("Cancion eliminada con exito")
                 return True
 
             actual = actual.siguiente
-        print("No se han encontrado resultados")
         return False
 
     # Complejidad O(n)

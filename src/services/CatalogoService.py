@@ -1,6 +1,6 @@
-from media.utils.FileManager import FileManager
-from structures.ListaSimple import ListaSimple
-from structures.ListaDoblementeEnlazada import ListaDoblementeEnlazada
+from src.utils.FileManager import FileManager
+from src.structures.ListaSimple import ListaSimple
+from src.structures.ListaDoblementeEnlazada import ListaDoblementeEnlazada
 from src.models.Cancion import Cancion
 
 class CatalogoService:
@@ -19,63 +19,91 @@ class CatalogoService:
         if len(artista.strip()) == 0:
             return False, "Debe introducir un artista para la cancion"
         
-        if duracion <= 0:
+        try:
+            duracion_num = float(duracion)
+            if duracion_num <= 0:
+                return False, "Debe introducir una duracion valida para la cancion"
+        except (ValueError, TypeError):
             return False, "Debe introducir una duracion valida para la cancion"
         
         if len(nombreArchivo.strip()) == 0:
             return False, "Debe introducir un nombre para el archivo"
 
         if self.fileManager.validar_archivo(nombreArchivo):
-            nuevaCancion = Cancion(titulo,artista,duracion,nombreArchivo)
+            nuevaCancion = Cancion(titulo,artista,duracion_num,nombreArchivo)
             self.catalogo.agregar(nuevaCancion)
             return True, "Cancion agregada exitosamente."
         else:
             return False, "El nombre del archivo no se ha encontrado"
 
     # Complejidad O(n)
+    # Muestra todas las canciones registradas en el catalogo
     def listarCancion(self):
-        if(self.catalogo.head is None):
+        if self.catalogo.head is None:
             return False, "No hay canciones registradas"
-        else:
-            self.catalogo.listar()
-            return True, None
-
-    def buscarCancion(self,cancion,criterio):
-        resultados = self.catalogo.buscar_por_nombre(cancion,criterio)
-        if not resultados:
-            return resultados, "No se encontraron coincidencias"
-        return resultados, None
+        for cancion in self.catalogo:
+            print(cancion)
+            print("-" * 25)
+        return True, None
 
     # Complejidad O(n)
+    # Busca canciones en el catalogo por coincidencia de texto en titulo o artista
+    def buscarCancion(self,cancion,criterio):
+        encontrados = False
+        for c in self.catalogo.buscar_por_nombre(cancion,criterio):
+            print(c)
+            print("-" * 25)
+            encontrados = True
+        if not encontrados:
+            return False, "No se encontraron coincidencias"
+        return True, None
 
+    # Complejidad O(n)
+    # Modifica los datos de una cancion existente validando todos los campos antes de aplicarlos
     def editarCancion(self,idCancion,titulo,artista,duracion,nombreArchivo):
         cancion:Cancion = self.catalogo.buscar_por_id(idCancion)
 
         if cancion is None:
             return False,"No existe ninguna cancion con este ID"
 
-        if titulo is not None and titulo!=cancion.titulo :
+        nuevo_titulo = cancion.titulo
+        if titulo is not None and titulo != cancion.titulo:
             if len(titulo.strip()) == 0:
                 return False, "Debe introducir un titulo para la cancion."
-            cancion.titulo = titulo
-        if artista is not None and artista!=cancion.artista:       
+            nuevo_titulo = titulo
+
+        nuevo_artista = cancion.artista
+        if artista is not None and artista != cancion.artista:
             if len(artista.strip()) == 0:
                 return False, "Debe introducir un artista para la cancion"
-            cancion.artista = artista
+            nuevo_artista = artista
 
-        if duracion is not None and duracion!=cancion.duracion:
-            if float(duracion) <= 0:
+        nueva_duracion = cancion.duracion
+        if duracion is not None and duracion != cancion.duracion:
+            try:
+                duracion_num = float(duracion)
+                if duracion_num <= 0:
+                    return False, "Debe introducir una duracion valida para la cancion"
+                nueva_duracion = duracion_num
+            except (ValueError, TypeError):
                 return False, "Debe introducir una duracion valida para la cancion"
-            cancion.duracion = duracion
 
-        if nombreArchivo is not None and nombreArchivo!=cancion.archivo:
+        nuevo_archivo = cancion.archivo
+        if nombreArchivo is not None and nombreArchivo != cancion.archivo:
             if len(nombreArchivo.strip()) == 0:
                 return False, "Debe introducir un nombre para el archivo"
 
             if self.fileManager.validar_archivo(nombreArchivo):
-                cancion.archivo = nombreArchivo
+                nuevo_archivo = nombreArchivo
             else:
-                return False,"El nombre del archivo no existe"
+                return False, "El nombre del archivo no existe en media/ o su extension no es valida (.mp3, .wav)"
+
+        # Aplicación atómica de cambios
+        cancion.titulo = nuevo_titulo
+        cancion.artista = nuevo_artista
+        cancion.duracion = nueva_duracion
+        cancion.archivo = nuevo_archivo
+
         return True, "Cancion editada con exito"
     
     # Complejidad O(n)
@@ -84,7 +112,7 @@ class CatalogoService:
         if cancion is None:
             return False, "Cancion no encontrada"
         else:
-            existeEnPlaylist = self.playlist.verificar_si_existe(cancion)
+            existeEnPlaylist = self.playlist.verificar_si_existe(cancion.id)
             return True, (cancion,existeEnPlaylist)
 
     # Complejidad O(n)
@@ -93,7 +121,7 @@ class CatalogoService:
         if cancion is None:
             return False, "Error al eliminar: Cancion no encontrada"
         else:
-            existeEnPlaylist = self.playlist.verificar_si_existe(cancion)
+            existeEnPlaylist = self.playlist.verificar_si_existe(cancion.id)
             if(existeEnPlaylist):
                 return False, "Error al eliminar: La cancion se encuentra en una playlist"
             else:
@@ -101,3 +129,8 @@ class CatalogoService:
                     self.fileManager.eliminar_archivo(cancion.archivo)
                     return True,"Cancion eliminada con exito."
                 return False, "Error al eliminar la cancion de la lista"
+
+    # Alias para compatibilidad con la interfaz
+    listarCanciones = listarCancion
+    buscarCancionPorId = buscarPorId
+    eliminarCancion = eliminarPorId

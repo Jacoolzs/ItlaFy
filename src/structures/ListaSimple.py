@@ -1,4 +1,4 @@
-from NodoSimple import NodoSimple
+from src.structures.NodoSimple import NodoSimple
 class ListaSimple:
 
     # Complejidad: O(1)
@@ -22,16 +22,17 @@ class ListaSimple:
         return True
 
     # Complejidad: O(n)
-    def listar(self):
+    # Permite iterar sobre las canciones de la lista simple sin usar estructuras intermedias
+    def __iter__(self):
         actual = self.head
-
-        if(actual is None):
-            return False
-
-        while(actual is not None):
-            print(actual.cancion)
+        while actual is not None:
+            yield actual.cancion
             actual = actual.siguiente
-        return True
+
+    # Complejidad: O(n)
+    # Generador que recorre los nodos y retorna las canciones de la lista
+    def listar(self):
+        return self.__iter__()
 
     # Complejidad: O(n)
     def buscar_por_id(self,id_buscado):
@@ -44,23 +45,18 @@ class ListaSimple:
         return actual
     
     # Complejidad: O(n)
+    # Generador que produce las canciones que coinciden con el criterio de busqueda
     def buscar_por_nombre(self,busqueda,criterio):
         actual = self.head
-        encontrados = False
 
-        while(actual is not None):
-            if(criterio == 1):
-                if(busqueda.casefold() in actual.cancion.titulo.casefold()):
-                    print(actual.cancion)
-                    encontrados = True
-            elif(criterio == 2):
-                if(busqueda.casefold() in actual.cancion.artista.casefold()):
-                    print(actual.cancion)
-                    encontrados = True
+        while actual is not None:
+            if criterio == 1 or criterio == "titulo":
+                if busqueda.casefold() in actual.cancion.titulo.casefold():
+                    yield actual.cancion
+            elif criterio == 2 or criterio == "artista":
+                if busqueda.casefold() in actual.cancion.artista.casefold():
+                    yield actual.cancion
             actual = actual.siguiente
-
-        if not encontrados: return False
-        else: return True
 
     # Complejidad: O(n)
     def eliminar_por_id(self,id_buscado):
