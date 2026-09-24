@@ -10,7 +10,7 @@ def limpiar_pantalla():
 def dibujar_menu(opciones: list[str], titulo: str):
     """
     Equivalente a Herramientas.DibujarMenu(string[] Menu, string Titulo).
-    Calcula el ancho dinámico y centra el título dentro de bordes con caracteres ASCII.
+    Calcula el ancho dinamico y centra el titulo dentro de bordes con caracteres ASCII.
     """
     longitud_max = len(titulo)
     for linea in opciones:
@@ -21,7 +21,7 @@ def dibujar_menu(opciones: list[str], titulo: str):
     espacios_izq = espacios_titulo // 2
     espacios_der = espacios_titulo - espacios_izq
 
-    # Marco superior y título
+    # Marco superior y titulo
     print("++" + ("-" * longitud_max) + "++")
     print("||" + (" " * espacios_izq) + titulo + (" " * espacios_der) + "||")
     print("++" + ("-" * longitud_max) + "++")
@@ -48,7 +48,7 @@ def dibujar_inputs(mensaje: str):
 def capturar_opcion(min_opc: int, max_opc: int, mensaje_prompt: str = "> ") -> int:
     """
     Equivalente al bucle int.TryParse(Console.ReadLine(), out opcion) 
-    y a la validación de rangos del código original en C#.
+    y a la validacion de rangos del codigo original en C#.
     """
     while True:
         entrada = input(mensaje_prompt).strip()

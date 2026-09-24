@@ -98,7 +98,7 @@ class CatalogoService:
             else:
                 return False, "El nombre del archivo no existe en media/ o su extension no es valida (.mp3, .wav)"
 
-        # Aplicación atómica de cambios
+        # Aplicacion atomica de cambios
         cancion.titulo = nuevo_titulo
         cancion.artista = nuevo_artista
         cancion.duracion = nueva_duracion

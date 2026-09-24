@@ -148,7 +148,7 @@ class Interfaz:
                         print("\nError al eliminar: Cancion no encontrada")
                     else:
                         print(f"\nCancion seleccionada:\n{cancion}\n")
-                        confirmacion = input("¿Esta seguro de que desea eliminar esta cancion? (s/n): ").strip().lower()
+                        confirmacion = input("Esta seguro de que desea eliminar esta cancion? (s/n): ").strip().lower()
                         if confirmacion in ("s", "si"):
                             exito, mensaje = self.catalogo_service.eliminarPorId(id_eliminar)
                             print(f"\n{mensaje}")
