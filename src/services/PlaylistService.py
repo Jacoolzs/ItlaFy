@@ -6,7 +6,7 @@ import pygame
 
 class PlaylistService:
 
-    # Complejidad O(1)
+    # complejidad O(1)
     def __init__(self,listaCatalogo:ListaSimple,listaPlaylist:ListaDoblementeEnlazada,fileManager:FileManager):
         self.listaCatalogo = listaCatalogo
         self.listaPlaylist = listaPlaylist
@@ -15,8 +15,8 @@ class PlaylistService:
         pygame.mixer.init()
 
     
-    # Complejidad O(n)
-    # Lista las canciones registradas en el catalogo que aun no han sido agregadas a la playlist
+    # complejidad O(n)
+    # canciones disponibles que no estan en la playlist
     def listarDisponibles(self):
         actual = self.listaCatalogo.head
         if actual is None:
@@ -33,8 +33,8 @@ class PlaylistService:
             return False, "Todas las canciones del catalogo ya han sido agregadas a la playlist."
         return True, None
 
-    # Complejidad O(n)
-    # Agrega una cancion del catalogo general al final de la playlist
+    # complejidad O(n)
+    # agrega la cancion al final de la playlist
     def agregarCanciones(self,idCancion):
         cancion: Cancion = self.listaCatalogo.buscar_por_id(idCancion)
 
@@ -50,8 +50,8 @@ class PlaylistService:
         else:
             return False,"Hubo un error al agregar la cancion a la playlist"
         
-    # Complejidad O(n)
-    # Elimina una cancion especifica de la playlist y actualiza la cancion actual si correspondia
+    # complejidad O(n)
+    # elimina cancion y actualiza la actual si aplica
     def eliminarCanciones(self, idCancion):
         if self.listaPlaylist.head is None:
             return False, "La playlist esta vacia"
@@ -73,8 +73,8 @@ class PlaylistService:
         else:
             return False, "La cancion no se encontraba en la playlist"
 
-    # Complejidad O(n)
-    # Muestra las canciones de la playlist en orden directo o inverso
+    # complejidad O(n)
+    # muestra la playlist en orden directo o inverso
     def mostrarPlaylist(self, inverso=False):
         if self.listaPlaylist.head is None:
             return False, "La playlist esta vacia"
@@ -82,13 +82,13 @@ class PlaylistService:
             print(f"{cancion.id} - {cancion.titulo} - {cancion.artista}")
         return True, None
         
-    # Complejidad O(1)
-    # Reproduce el archivo de audio de la cancion actual (o la primera si no hay seleccionada)
+    # complejidad O(1)
+    # reproduce la cancion actual o la primera si no hay seleccion
     def reproducirActual(self):
         if self.listaPlaylist.head is None:
             return False, "No hay canciones en la playlist para reproducir"
 
-        # Si no hay cancion seleccionada, se toma la primera de la playlist como actual
+        # si no hay actual toma la primera
         if self.listaPlaylist.current is None:
             self.listaPlaylist.current = self.listaPlaylist.head
 
@@ -108,8 +108,8 @@ class PlaylistService:
         except Exception as e:
             return False, f"Error al reproducir audio: {str(e)}"
 
-    # Complejidad O(1)
-    # Alterna entre pausar y reanudar la reproduccion de audio
+    # complejidad O(1)
+    # pausa o reanuda la musica
     def pausarOreanudar(self):
         cancionActual:Cancion = self.listaPlaylist.actual()
         
@@ -127,8 +127,8 @@ class PlaylistService:
         else:
             return False, "No hay canciones sonando actualmente"
 
-    # Complejidad O(1)
-    # Desplaza la seleccion a la siguiente cancion de la playlist
+    # complejidad O(1)
+    # pasa a la siguiente cancion
     def siguienteCancion(self):
         if not self.listaPlaylist.avanzar():
             return False,"No hay canciones en la playlist"
@@ -136,8 +136,8 @@ class PlaylistService:
             cancion = self.listaPlaylist.actual()
             return True, f"Cancion actual: {cancion.titulo} - {cancion.artista}"
 
-    # Complejidad O(1)
-    # Desplaza la seleccion a la cancion anterior de la playlist
+    # complejidad O(1)
+    # vuelve a la cancion anterior
     def anteriorCancion(self):
         if not self.listaPlaylist.retroceder():
             return False,"No hay canciones en la playlist"
@@ -145,7 +145,7 @@ class PlaylistService:
             cancion = self.listaPlaylist.actual()
             return True, f"Cancion actual: {cancion.titulo} - {cancion.artista}"
 
-    # Metodos y alias de compatibilidad con la interfaz
+    # alias y metodos para la interfaz
     def listarPlaylist(self):
         return self.mostrarPlaylist(inverso=False)
 
@@ -156,8 +156,8 @@ class PlaylistService:
     eliminarCancion = eliminarCanciones
     alternarPausa = pausarOreanudar
 
-    # Complejidad O(1)
-    # Detiene la reproduccion y libera los recursos de audio de pygame
+    # complejidad O(1)
+    # detiene y cierra el audio de pygame
     def cerrarReproductor(self):
         try:
             pygame.mixer.music.stop()

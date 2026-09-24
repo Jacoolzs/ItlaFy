@@ -4,14 +4,11 @@ import sys
 # CODIGO TRADUCIDO DESDE C# DESDE UN PROYECTO QUE HICE EN EL C2
 
 def limpiar_pantalla():
-    """Equivalente a Console.Clear()"""
+    # limpia la pantalla
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def dibujar_menu(opciones: list[str], titulo: str):
-    """
-    Equivalente a Herramientas.DibujarMenu(string[] Menu, string Titulo).
-    Calcula el ancho dinamico y centra el titulo dentro de bordes con caracteres ASCII.
-    """
+    # calcula el ancho y centra el titulo con bordes ascii
     longitud_max = len(titulo)
     for linea in opciones:
         if len(linea) > longitud_max:
@@ -21,22 +18,22 @@ def dibujar_menu(opciones: list[str], titulo: str):
     espacios_izq = espacios_titulo // 2
     espacios_der = espacios_titulo - espacios_izq
 
-    # Marco superior y titulo
+    # marco superior y titulo
     print("++" + ("-" * longitud_max) + "++")
     print("||" + (" " * espacios_izq) + titulo + (" " * espacios_der) + "||")
     print("++" + ("-" * longitud_max) + "++")
 
-    # Filas de opciones
+    # opciones
     for linea in opciones:
         espacios_relleno = longitud_max - len(linea)
         print("||" + linea + (" " * espacios_relleno) + "||")
 
-    # Marco inferior
+    # marco inferior
     print("++" + ("-" * longitud_max) + "++")
     print("++" + ("-" * longitud_max) + "++")
 
 def dibujar_inputs(mensaje: str):
-    """Equivalente a Herramientas.DibujarInputs(string Mensaje)."""
+    # marco del input
     longitud = len(mensaje)
     borde = "++" + ("-" * longitud) + "++" + ("-" * longitud) + "++"
     print(borde)
@@ -46,10 +43,7 @@ def dibujar_inputs(mensaje: str):
     print(borde)
 
 def capturar_opcion(min_opc: int, max_opc: int, mensaje_prompt: str = "> ") -> int:
-    """
-    Equivalente al bucle int.TryParse(Console.ReadLine(), out opcion) 
-    y a la validacion de rangos del codigo original en C#.
-    """
+    # valida que la opcion ingresada este dentro del rango permitido
     while True:
         entrada = input(mensaje_prompt).strip()
         try:

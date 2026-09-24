@@ -4,14 +4,14 @@ from src.structures.ListaDoblementeEnlazada import ListaDoblementeEnlazada
 from src.models.Cancion import Cancion
 
 class CatalogoService:
-    # Complejidad O(1)
+    # complejidad O(1)
     def __init__(self,listaCatalogo: ListaSimple, listaPlaylist: ListaDoblementeEnlazada, fileManager: FileManager):
         self.catalogo = listaCatalogo
         self.playlist = listaPlaylist
         self.fileManager = fileManager
         pass
 
-    # Complejidad O(n)
+    # complejidad O(n)
     def agregarCancion(self, titulo, artista,duracion,nombreArchivo):
         if len(titulo.strip()) == 0:
             return False, "Debe introducir un titulo para la cancion."
@@ -36,8 +36,8 @@ class CatalogoService:
         else:
             return False, "El nombre del archivo no se ha encontrado"
 
-    # Complejidad O(n)
-    # Muestra todas las canciones registradas en el catalogo
+    # complejidad O(n)
+    # muestra las canciones registradas en el catalogo
     def listarCancion(self):
         if self.catalogo.head is None:
             return False, "No hay canciones registradas"
@@ -46,8 +46,8 @@ class CatalogoService:
             print("-" * 25)
         return True, None
 
-    # Complejidad O(n)
-    # Busca canciones en el catalogo por coincidencia de texto en titulo o artista
+    # complejidad O(n)
+    # busca canciones por titulo o artista
     def buscarCancion(self,cancion,criterio):
         encontrados = False
         for c in self.catalogo.buscar_por_nombre(cancion,criterio):
@@ -58,8 +58,8 @@ class CatalogoService:
             return False, "No se encontraron coincidencias"
         return True, None
 
-    # Complejidad O(n)
-    # Modifica los datos de una cancion existente validando todos los campos antes de aplicarlos
+    # complejidad O(n)
+    # edita los datos de la cancion validando los campos
     def editarCancion(self,idCancion,titulo,artista,duracion,nombreArchivo):
         cancion:Cancion = self.catalogo.buscar_por_id(idCancion)
 
@@ -98,7 +98,7 @@ class CatalogoService:
             else:
                 return False, "El nombre del archivo no existe en media/ o su extension no es valida (.mp3, .wav)"
 
-        # Aplicacion atomica de cambios
+        # aplica los cambios
         cancion.titulo = nuevo_titulo
         cancion.artista = nuevo_artista
         cancion.duracion = nueva_duracion
@@ -106,7 +106,7 @@ class CatalogoService:
 
         return True, "Cancion editada con exito"
     
-    # Complejidad O(n)
+    # complejidad O(n)
     def buscarPorId(self, idCancion):
         cancion = self.catalogo.buscar_por_id(idCancion)
         if cancion is None:
@@ -115,7 +115,7 @@ class CatalogoService:
             existeEnPlaylist = self.playlist.verificar_si_existe(cancion.id)
             return True, (cancion,existeEnPlaylist)
 
-    # Complejidad O(n)
+    # complejidad O(n)
     def eliminarPorId(self, idCancion):
         cancion:Cancion = self.catalogo.buscar_por_id(idCancion)
         if cancion is None:
@@ -130,7 +130,7 @@ class CatalogoService:
                     return True,"Cancion eliminada con exito."
                 return False, "Error al eliminar la cancion de la lista"
 
-    # Alias para compatibilidad con la interfaz
+    # alias para la interfaz
     listarCanciones = listarCancion
     buscarCancionPorId = buscarPorId
     eliminarCancion = eliminarPorId

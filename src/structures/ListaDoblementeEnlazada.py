@@ -2,20 +2,20 @@ from src.structures.NodoDoble import NodoDoble
 
 class ListaDoblementeEnlazada:
 
-    # Complejidad O(1)
+    # complejidad O(1)
     def __init__(self):
         self.head = None
         self.tail = None
         self.current = None
 
-    # Complejidad O(1)
-    # Retorna el objeto cancion almacenado en el nodo actual
+    # complejidad O(1)
+    # cancion del nodo actual
     def actual(self):
         if self.current is None:
             return None
         return self.current.cancion
 
-    # Complejidad O(1)
+    # complejidad O(1)
     def agregar(self,cancion):
         nuevaCancion = NodoDoble(cancion)
         
@@ -30,7 +30,7 @@ class ListaDoblementeEnlazada:
         self.tail = nuevaCancion
         return True
 
-    # Complejidad O(1)
+    # complejidad O(1)
     def avanzar(self):
         if self.head is None:
             return False
@@ -42,7 +42,7 @@ class ListaDoblementeEnlazada:
             self.current = self.current.siguiente
             return True
 
-    # Complejidad O(1)
+    # complejidad O(1)
     def retroceder(self):
         if self.head is None:
             return False
@@ -54,25 +54,23 @@ class ListaDoblementeEnlazada:
             self.current = self.current.anterior
             return True
 
-    # Complejidad O(n)
-    # Permite iterar hacia adelante por defecto sobre la lista doblemente enlazada
+    # complejidad O(n)
     def __iter__(self):
         return self.recorrer(inverso=False)
 
-    # Complejidad O(n)
-    # Generador que recorre la playlist en sentido directo o inverso sin usar estructuras externas
+    # complejidad O(n)
+    # recorre la playlist hacia adelante o atras
     def recorrer(self, inverso=False):
         actual = self.tail if inverso else self.head
         while actual is not None:
             yield actual.cancion
             actual = actual.anterior if inverso else actual.siguiente
 
-    # Complejidad O(n)
-    # Generador compatible para obtener las canciones de la lista
+    # complejidad O(n)
     def mostrar_playlist(self, inverso):
         return self.recorrer(inverso)
 
-    # Complejidad O(n)
+    # complejidad O(n)
     def eliminar_por_id(self,id_eliminar):
         if self.head is None:
             return False
@@ -81,10 +79,10 @@ class ListaDoblementeEnlazada:
         while actual is not None:
             if actual.cancion.id == id_eliminar:
 
-                # Si la cancion a eliminar es el current
+                # si la cancion a eliminar es la actual
                 if actual == self.current:
 
-                    # Valido que tenga siguiente y anterior
+                    # valida si tiene siguiente o anterior
                     if actual.siguiente is not None:
                         self.current = actual.siguiente
 
@@ -114,7 +112,7 @@ class ListaDoblementeEnlazada:
             actual = actual.siguiente
         return False
 
-    # Complejidad O(n)
+    # complejidad O(n)
 
     def verificar_si_existe(self,id_buscado):
         actual = self.head

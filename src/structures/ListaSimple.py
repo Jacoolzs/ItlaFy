@@ -1,11 +1,11 @@
 from src.structures.NodoSimple import NodoSimple
 class ListaSimple:
 
-    # Complejidad: O(1)
+    # complejidad: O(1)
     def __init__(self):
         self.head = None
 
-    # Complejidad: O(n)
+    # complejidad: O(n)
     def agregar(self, cancion):
 
         nuevaCancion = NodoSimple(cancion)
@@ -21,20 +21,19 @@ class ListaSimple:
         actual.siguiente = nuevaCancion
         return True
 
-    # Complejidad: O(n)
-    # Permite iterar sobre las canciones de la lista simple sin usar estructuras intermedias
+    # complejidad: O(n)
+    # recorre los nodos de la lista
     def __iter__(self):
         actual = self.head
         while actual is not None:
             yield actual.cancion
             actual = actual.siguiente
 
-    # Complejidad: O(n)
-    # Generador que recorre los nodos y retorna las canciones de la lista
+    # complejidad: O(n)
     def listar(self):
         return self.__iter__()
 
-    # Complejidad: O(n)
+    # complejidad: O(n)
     def buscar_por_id(self,id_buscado):
         actual = self.head
 
@@ -44,8 +43,8 @@ class ListaSimple:
             actual = actual.siguiente
         return actual
     
-    # Complejidad: O(n)
-    # Generador que produce las canciones que coinciden con el criterio de busqueda
+    # complejidad: O(n)
+    # busca coincidencias segun el criterio
     def buscar_por_nombre(self,busqueda,criterio):
         actual = self.head
 
@@ -58,7 +57,7 @@ class ListaSimple:
                     yield actual.cancion
             actual = actual.siguiente
 
-    # Complejidad: O(n)
+    # complejidad: O(n)
     def eliminar_por_id(self,id_buscado):
         actual = self.head
 
