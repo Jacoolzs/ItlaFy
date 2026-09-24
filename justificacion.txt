@@ -2,8 +2,8 @@ Justificación del Uso de Estructuras de Datos
 
 Para este proyecto decidi separar las dos colecciones principales del sistema utilizando dos estructuras distintas segun la necesidad de cada modulo:
 
-en atalogo General de Canciones use Lista Simplemente Enlazada (ListaSimple)
-motivo: El catálogo funciona como un repositorio o inventario general de canciones. Las operaciones que se realizan sobre él son registrar canciones nuevas, eliminarlas y hacer búsquedas secuenciales (por ID, título o artista).
+en catalogo general de canc use Lista Simplemente Enlazada (ListaSimple)
+motivo: El catálogo funciona como un repositorio de canciones. Las operaciones que se realizan sobre él son registrar canciones nuevas, eliminarlas y hacer búsquedas secuenciales (por ID, título o artista).
 - Justificación técnica: Para estas tareas solo hace falta recorrer los datos en un único sentido (de inicio a fin). No existe la necesidad de "ir hacia atrás" ni de mantener un puntero a una canción actual. Usar una lista simple aquí es la opción más eficiente porque evita la sobrecarga de memoria de guardar un puntero adicional (anterior) en cada nodo, manteniendo la lógica de inserción y eliminación mucho más limpia y directa.
 
 2. Mi Playlist y Reproductor -> Lista Doblemente Enlazada (ListaDoblementeEnlazada)
